@@ -1,73 +1,53 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Okinawa Explorer and Business Setup App Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+![Project Logo](./path/to/your/logo.png)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Welcome to the Okinawa Explorer and Business Setup App Backend repository! This backend serves as the foundation for an innovative application designed to empower outsiders who wish to explore the wonders of Okinawa and embark on new business ventures within the prefecture.
 
-## Description
+## About the Project
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+The Okinawa Explorer and Business Setup App aims to provide a comprehensive solution for individuals seeking to immerse themselves in the beauty and opportunities that Okinawa Prefecture has to offer. Whether it's discovering breathtaking landscapes or navigating the intricacies of establishing a business, our application serves as a reliable companion.
 
-## Installation
+Key Features:
 
-```bash
-$ npm install
+- [ ] User authentication and authorization for personalized experiences.
+- [ ] Access to a curated database of Okinawa's attractions, culture, and resources.
+- [ ] Business setup resources, guides, and relevant legal information.
+- [ ] Seamless API endpoints for data retrieval and interaction.
+
+## Getting Started
+
+These instructions will help you set up and deploy the Okinawa Explorer and Business Setup App Backend on your local environment.
+
+### Prerequisites
+
+- Node.js and npm (Node Package Manager)
+- PostgreSQL database (or any other supported database)
+
+### Installation
+
+1. Clone the repository:
+
+   ```shell
+   git clone https://github.com/your-username/okinawa-explorer-backend.git
+   cd okinawa-explorer-backend
+
+
+## Contributing
+We welcome contributions from the community to enhance the functionality and features of this project. To contribute:
+
+Fork the repository.
+```Create a new branch for your feature/fix: git checkout -b feature-name.
+  Commit your changes: git commit -m 'Add some feature'.
+  Push to your fork: git push origin feature-name.
+  Create a pull request against the main branch.
+  Please review our Contribution Guidelines for more details.
 ```
 
-## Running the app
+## Contact
+If you have any questions or would like to get in touch, feel free to contact us:
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+Email: sakaguchi@real-cnt.com, chinmay@real-cnt.com
+Real Connect株式会社, Okinawa
+License
+This project is licensed under the MIT License.
