@@ -1,11 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-
-export type UserType = {
-  name: string
-  email: string
-  password: string
-}
+import { User } from './types/user.type';
 
 @Controller()
 export class AppController {
@@ -22,7 +17,12 @@ export class AppController {
   }
 
   @Post('/users')
-  createUser(@Body() user: UserType) {
+  createUser(@Body() user: User) {
     return this.appService.createUser(user);
+  }
+
+  @Post('/update-users')
+  updateUser(@Body() user: User) {
+    return this.appService.updateUser(user);
   }
 }
