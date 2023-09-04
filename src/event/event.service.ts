@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { CreateEventDto } from 'src/dtos/create-event.dto';
 import { AppEvent } from 'src/types/event.type';
@@ -20,38 +20,42 @@ export class EventsService {
     const serializedOmiyage = JSON.stringify(createEventDto.omiyage);
     const serializedSnsLinks = JSON.stringify(createEventDto.snsLinks);
 
-    const createdEvent = await this.prisma.event.create({
-      data: {
-        title: createEventDto.title,
-        description: createEventDto.description,
-        images: serializedImages,
-        tags: serializedTags,
-        activities: serializedActivities,
-        omiyage: serializedOmiyage,
-        snsLinks: serializedSnsLinks,
-        city: createEventDto.city,
-        prefecture: createEventDto.prefecture,
-      },
-    });
+    try {
+      const createdEvent = await this.prisma.event.create({
+        data: {
+          title: createEventDto.title,
+          description: createEventDto.description,
+          images: serializedImages,
+          tags: serializedTags,
+          activities: serializedActivities,
+          omiyage: serializedOmiyage,
+          snsLinks: serializedSnsLinks,
+          city: createEventDto.city,
+          prefecture: createEventDto.prefecture,
+        },
+      });
 
-    const event: AppEvent = {
-      id: createdEvent.id,
-      title: createdEvent.title,
-      description: createdEvent.description,
-      images: JSON.parse(createdEvent.images),
-      tags: JSON.parse(createdEvent.tags),
-      activities: JSON.parse(createdEvent.activities),
-      omiyage: JSON.parse(createdEvent.omiyage),
-      snsLinks: JSON.parse(createdEvent.snsLinks),
-      city: createdEvent.city,
-      prefecture: createdEvent.prefecture,
-      createdAt: createdEvent.createdAt,
-    };
+      const event: AppEvent = {
+        id: createdEvent.id,
+        title: createdEvent.title,
+        description: createdEvent.description,
+        images: JSON.parse(createdEvent.images),
+        tags: JSON.parse(createdEvent.tags),
+        activities: JSON.parse(createdEvent.activities),
+        omiyage: JSON.parse(createdEvent.omiyage),
+        snsLinks: JSON.parse(createdEvent.snsLinks),
+        city: createdEvent.city,
+        prefecture: createdEvent.prefecture,
+        createdAt: createdEvent.createdAt,
+      };
 
-    return {
-      message: 'Event created successfully',
-      event: event,
-    };
+      return {
+        message: 'Event created successfully',
+        event: event,
+      };
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // fetch all the events
