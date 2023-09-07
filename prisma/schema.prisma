@@ -13,12 +13,18 @@ datasource db {
   relationMode = "prisma"
 }
 
+enum UserRole {
+  ADMIN
+  USER
+  EVENT_ORGANIZER
+}
+
 model User {
   id       Int    @id @default(autoincrement())
   email    String @unique
   name     String
   password String
-  // posts Post[]
+  role     UserRole @default(USER)
 }
 
 model Event {
