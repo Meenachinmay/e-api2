@@ -23,11 +23,11 @@ services:
     volumes:
       - data_database:/var/lib/postgresql/data  
     
-  migration:
-    build: .
-    command: ["npx", "prisma", "migrate", "dev", "--name", "init"]
-    depends_on:
-      - database
+  # migration:
+  #   build: .
+  #   command: ["npx", "prisma", "migrate", "dev", "--name", "init"]
+  #   depends_on:
+  #     - database
 
 volumes:
     data_database:
