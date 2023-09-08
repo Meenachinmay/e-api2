@@ -14,6 +14,12 @@ export class AuthController {
     return { msg: 'ok' };
   }
 
+  @Get('logout')
+  handleLogout(@Req() request: Request) {
+    request.logOut(() => {});
+    return { msg: 'logged out' };
+  }
+
   @Get('user')
   getUser(@Req() request: Request) {
     console.log(request.user);

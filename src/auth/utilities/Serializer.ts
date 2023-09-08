@@ -11,16 +11,12 @@ export class SessionSerializer extends PassportSerializer {
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   serializeUser(user: User, done: Function) {
-    done(null, user);
+    done(null, user.email);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/ban-types
-  async deserializeUser(payload: User, done: Function) {
-    console.log('payload', payload);
-    const user = await this.authService.findUserForDeserialization(
-      payload.email,
-    );
-
+  async deserializeUser(email: string, done: Function) {
+    const user = await this.authService.findUserForDeserialization(email);
     return user ? done(null, user) : done(null, null);
   }
 }

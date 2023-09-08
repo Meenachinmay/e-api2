@@ -6,7 +6,7 @@ import { User, UserRole } from 'src/types/user.type';
 export class AuthService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async validateUser(details: User) {
+  async validateUser(details: Partial<User>): Promise<User | null> {
     // first check if the user is already exists
     const userFound = await this.prisma.user.findUnique({
       where: {
