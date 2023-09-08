@@ -18,6 +18,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 
 # Make the script executable
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x docker-entrypoint.sh
 
 # Development runtime command
 ENTRYPOINT ["docker-entrypoint.sh"]

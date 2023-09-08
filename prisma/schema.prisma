@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
 }
 
@@ -20,8 +20,8 @@ enum UserRole {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
   name     String
   password String?
   role     UserRole @default(USER)
@@ -39,4 +39,15 @@ model Event {
   city        String
   prefecture  String
   createdAt   DateTime @default(now())
+}
+
+model TestPost {
+  id      Int    @id @default(autoincrement())
+  title   String
+  content String
+}
+
+model MahimaTest {
+  id      Int    @id @default(autoincrement())
+  title   String
 }
