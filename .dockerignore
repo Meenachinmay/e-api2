@@ -1,2 +1,2 @@
-./docker-entrypoint.sh
-docker-entrypoint.sh
+# ./docker-entrypoint.sh
+# docker-entrypoint.sh
