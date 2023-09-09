@@ -1,12 +1,11 @@
 #!/bin/sh
 
-# echo "Running migrations..."
+echo "Running migrations..."
 
-# # Run migrations for development
-# npx prisma migrate deploy --preview-feature
+# Run migrations for development
+npx prisma migrate dev --name init --preview-feature
 
-# echo "Ran the migrations"
+echo "Ran the migrations"
 
 # Start your application
 npm run start:dev
-

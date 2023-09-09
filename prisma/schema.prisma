@@ -40,14 +40,3 @@ model Event {
   prefecture  String
   createdAt   DateTime @default(now())
 }
-
-model TestPost {
-  id      Int    @id @default(autoincrement())
-  title   String
-  content String
-}
-
-model MahimaTest {
-  id      Int    @id @default(autoincrement())
-  title   String
-}
