@@ -9,6 +9,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
     env: # Adding environment variables
       NESTJS_PORT: ${{ secrets.NESTJS_PORT }}
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
@@ -19,7 +24,13 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
 
     # Creating env file 
     - name: "Create env file"
@@ -27,13 +38,13 @@ jobs:
         echo "${{secrets.ENV_FILE }}" >> .env
 
     # Cache Node.js modules
-    - name: Cache Node.js modules
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.OS }}-node-
+    # - name: Cache Node.js modules
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: ~/.npm
+    #     key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+    #     restore-keys: |
+    #       ${{ runner.OS }}-node-
           
     # Cache Docker layers
     - name: Cache Docker layers
