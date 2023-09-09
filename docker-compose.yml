@@ -6,8 +6,8 @@ services:
     image: "startup2023/oeapi:latest"
     ports:
       - "${NESTJS_PORT}:${NESTJS_PORT}"
-    depends_on:
-      - database
+    # depends_on:
+    #   - database
     volumes:
       - ./:/usr/src/app  # Replace with the path where your NestJS app should store persistent data
     environment:
@@ -15,18 +15,18 @@ services:
     networks:
       - myoeapi_network
 
-  database:
-    image: "postgres:13"
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
-    volumes:
-      - data_database:/var/lib/postgresql/data  
-    networks:
-      - myoeapi_network
+  # database:
+  #   image: "postgres:13"
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     POSTGRES_DB: ${POSTGRES_DB}
+  #   ports:
+  #     - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+  #   volumes:
+  #     - data_database:/var/lib/postgresql/data  
+  #   networks:
+  #     - myoeapi_network
     
   # migration:
   #   build: .
@@ -34,8 +34,8 @@ services:
   #   depends_on:
   #     - database
 
-volumes:
-    data_database:
+# volumes:
+#     data_database:
 
 networks:
   myoeapi_network:
