@@ -65,7 +65,7 @@ jobs:
 
     # Push Docker Image
     - name: Push Docker Image
-      run: docker push startup2023/oeapi:latest .
+      run: docker push startup2023/oeapi:latest
 
     # Deploy to DigitalOcean
     # - name: Deploy to DigitalOcean
