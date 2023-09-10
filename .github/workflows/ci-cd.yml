@@ -85,6 +85,13 @@ jobs:
             sed -i 's/startup2023\/oeapi:latest/startup2023\/oeapi:${{ github.sha }}/' docker-compose.yml
             docker-compose down || true
             docker-compose up -d
+
+            # get the container ID
+            CONTAINER_ID=$(docker ps --filter "ancestor=startup2023/oeapi:${{ github.sha }}" --format "{{.ID}}")
+
+            # Run prisma migration
+            docker exec -it $CONTAINER_ID npx prisma migrate deploy --preview-feature
+
             # remove unused docker images
             docker image prune -a -f
             # docker stop oeapi_container || true

@@ -13,17 +13,17 @@ COPY . .
 
 RUN npx prisma generate
 
-RUN npx prisma migrate deploy --preview-feature
+# RUN npx prisma migrate deploy --preview-feature
 
 # Copy the entrypoint script into the image
-#COPY docker-entrypoint.sh /usr/local/bin/
+# COPY docker-entrypoint.sh /usr/local/bin/
 
 # Make the script executable
-#RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-#RUN chmod +x docker-entrypoint.sh
+# RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+# RUN chmod +x docker-entrypoint.sh
 
 # Development runtime command
-#ENTRYPOINT ["docker-entrypoint.sh"]
+# ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD [ "npm", "run", "start:dev" ]
 
