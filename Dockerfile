@@ -29,7 +29,9 @@ RUN npm ci --only=production
 COPY --from=builder /usr/src/app/dist ./dist
 
 # Copy generated Prisma Client
-COPY --from=builder /usr/src/app/node_modules/.prisma ./
+# COPY --from=builder /usr/src/app/node_modules/.prisma ./
+COPY --from=builder /usr/src/app/node_modules/@prisma /usr/src/app/node_modules/@prisma
+
 
 # Copy other required files and set production environment
 COPY docker-entrypoint.sh /usr/local/bin/
