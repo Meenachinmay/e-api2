@@ -34,6 +34,8 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY . .
+# Explicitly copy the Prisma schema
+COPY prisma/schema.prisma ./prisma/
 
 # Development stage
 FROM base AS development
@@ -49,10 +51,9 @@ RUN npm run build
 FROM node:18-alpine AS production
 WORKDIR /usr/src/app
 COPY package*.json ./
-# Install only production dependencies
 RUN npm install --only=production
-# Copy built app from the build stage
 COPY --from=build /usr/src/app/dist ./dist
-# Generate Prisma Client
+# The Prisma schema should already be copied in the base stage
 RUN npx prisma generate
 CMD ["npm", "start"]
+
