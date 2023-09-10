@@ -15,9 +15,7 @@ lerna-debug.log*
 *.env
 *.dev.yml
 
-docker-compose.yml
-/.docker-compose.yml
-./docker-compose.yml
+/docker-compose.dev.yml
 
 
 # OS
