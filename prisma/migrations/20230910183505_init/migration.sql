@@ -1,9 +1,13 @@
+-- CreateEnum
+CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'USER', 'EVENT_ORGANIZER');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "password" TEXT,
+    "role" "UserRole" NOT NULL DEFAULT 'USER',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -25,5 +29,18 @@ CREATE TABLE "Event" (
     CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Comment" (
+    "id" SERIAL NOT NULL,
+    "content" TEXT NOT NULL,
+    "rating" DOUBLE PRECISION NOT NULL,
+    "eventId" INTEGER NOT NULL,
+
+    CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE INDEX "Comment_eventId_idx" ON "Comment"("eventId");

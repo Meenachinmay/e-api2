@@ -30,7 +30,7 @@ model User {
 
 // event model
 model Event {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   title       String
   description String
   images      String
@@ -40,7 +40,7 @@ model Event {
   snsLinks    String
   city        String
   prefecture  String
-  createdAt   DateTime @default(now())
+  createdAt   DateTime  @default(now())
   comments    Comment[] // Adding the relationship here
 }
 
@@ -53,4 +53,9 @@ model Comment {
   event   Event  @relation(fields: [eventId], references: [id])
 
   @@index([eventId])
+}
+
+model EventOrganizer {
+  id    Int    @id @default(autoincrement())
+  title String
 }
