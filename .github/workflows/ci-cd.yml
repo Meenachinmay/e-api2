@@ -65,7 +65,7 @@ jobs:
 
       # Build Docker Image
       - name: Build Production Docker Image
-        run: docker build --target production -t startup2023/oeapi:${{ github.sha }} .
+        run: docker build -t startup2023/oeapi:${{ github.sha }} .
 
       # Push Docker Image
       - name: Push Docker Image
