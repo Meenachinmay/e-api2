@@ -43,11 +43,11 @@ jobs:
 
     # Build Docker Image
     - name: Build Docker Image
-      run: docker build -t startup2023/oeapi:latest .
+      run: docker build -t startup2023/oeapi:${{ github.sha }} .
 
     # Push Docker Image
     - name: Push Docker Image
-      run: docker push startup2023/oeapi:latest
+      run: docker push startup2023/oeapi:${{ github.sha }}
 
     # Deploy to DigitalOcean 
     - name: Deploy to DigitalOcean
@@ -58,7 +58,7 @@ jobs:
 
         # SSH into the droplet and pull the latest Docker image, then restart the container
         ssh -o StrictHostKeyChecking=no -i droplet_ssh_key ${{ secrets.DROPLET_SSH_USERNAME }}@165.22.87.111 << 'ENDSSH'
-          docker pull startup2023/oeapi:latest
+          docker pull startup2023/oeapi:${{ github.sha }}
           # cd /root/oeapi
           # docker-compose down || true
           # docker-compose up
@@ -66,5 +66,5 @@ jobs:
           #docker image prune -a -f
           docker stop oeapi_container || true
           docker rm oeapi_container || true
-          docker run --name oeapi_container -d -p 80:3000 startup2023/oeapi:latest
+          docker run --name oeapi_container -d -p 80:3000 startup2023/oeapi:${{ github.sha }}
         ENDSSH

@@ -38,4 +38,6 @@ COPY --from=builder /usr/src/app/prisma ./prisma
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+ENV DATABASE_URL='postgres://oeapi:BEBe02JFAnVH7Yjg0aOc69k0EZ5b5p3t@dpg-cju5nc7hdsdc738ss7ig-a.oregon-postgres.render.com/db_hm19'
+
 ENTRYPOINT ["docker-entrypoint.sh"]
