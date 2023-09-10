@@ -30,7 +30,8 @@ COPY --from=builder /usr/src/app/dist ./dist
 
 # Copy generated Prisma Client
 # COPY --from=builder /usr/src/app/node_modules/.prisma ./
-COPY --from=builder /usr/src/app/node_modules/@prisma /usr/src/app/node_modules/@prisma
+COPY --from=builder /usr/src/app/node_modules/@prisma/client /usr/src/app/node_modules/@prisma/client
+COPY --from=builder /usr/src/app/prisma ./prisma
 
 
 # Copy other required files and set production environment
