@@ -86,6 +86,6 @@ jobs:
           docker-compose up -d
           # docker stop oeapi_container || true
           # docker rm oeapi_container || true
-          docker run --name oeapi_container -d -p 80:3000 startup2023/oeapi:latest
+          # docker run --name oeapi_container -d -p 80:3000 startup2023/oeapi:latest
         ENDSSH
 
