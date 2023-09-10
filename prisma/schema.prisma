@@ -19,6 +19,7 @@ enum UserRole {
   EVENT_ORGANIZER
 }
 
+// user model
 model User {
   id       Int      @id @default(autoincrement())
   email    String   @unique
@@ -27,6 +28,7 @@ model User {
   role     UserRole @default(USER)
 }
 
+// event model
 model Event {
   id          Int      @id @default(autoincrement())
   title       String
@@ -39,4 +41,16 @@ model Event {
   city        String
   prefecture  String
   createdAt   DateTime @default(now())
+  comments    Comment[] // Adding the relationship here
+}
+
+// comment model
+model Comment {
+  id      Int    @id @default(autoincrement())
+  content String
+  rating  Float
+  eventId Int
+  event   Event  @relation(fields: [eventId], references: [id])
+
+  @@index([eventId])
 }

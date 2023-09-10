@@ -4,3 +4,7 @@
 ./docker-files-templates
 /docker-files-templates
 docker-files-templates
+
+./docker-compose.dev.yml
+/docker-compose.dev.yml
+docker-compose.dev.yml
