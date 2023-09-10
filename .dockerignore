@@ -1,2 +1,6 @@
 # ./docker-entrypoint.sh
 # docker-entrypoint.sh
+
+./docker-files-templates
+/docker-files-templates
+docker-files-templates
