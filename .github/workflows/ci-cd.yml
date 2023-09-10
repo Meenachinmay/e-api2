@@ -23,69 +23,71 @@ jobs:
       # ...add more here
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    # Creating env file 
-    - name: "Create env file"
-      run: |
-        echo "${{secrets.ENV_FILE }}" >> .env
-    
-    - name: "Generate Docker Compose file"
-      run: |
-        echo "${{secrets.DOCKER_FILE }}" >> docker-compose.yml
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-    # Cache Node.js modules
-    # - name: Cache Node.js modules
-    #   uses: actions/cache@v2
-    #   with:
-    #     path: ~/.npm
-    #     key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-    #     restore-keys: |
-    #       ${{ runner.OS }}-node-
-          
-    # Cache Docker layers
-    # - name: Cache Docker layers
-    #   uses: satackey/action-docker-layer-caching@v0.0.11
-    #   continue-on-error: true
-    #   with:
-    #     key: startup2023/oeapi:latest-${{ github.sha }}
-    #     restore-keys: |
-    #       startup2023/oeapi:latest
+      # Creating env file
+      - name: 'Create env file'
+        run: |
+          echo "${{secrets.ENV_FILE }}" >> .env
 
-    # Login to Docker Hub
-    - name: Login to Docker Hub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: 'Generate Docker Compose file'
+        run: |
+          echo "${{secrets.DOCKER_FILE }}" >> docker-compose.yml
 
-    # Build Docker Image
-    - name: Build Docker Image
-      run: docker build -t startup2023/oeapi:latest .
+      # Cache Node.js modules
+      # - name: Cache Node.js modules
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: ~/.npm
+      #     key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.OS }}-node-
 
-    # Push Docker Image
-    - name: Push Docker Image
-      run: docker push startup2023/oeapi:latest
+      # Cache Docker layers
+      # - name: Cache Docker layers
+      #   uses: satackey/action-docker-layer-caching@v0.0.11
+      #   continue-on-error: true
+      #   with:
+      #     key: startup2023/oeapi:latest-${{ github.sha }}
+      #     restore-keys: |
+      #       startup2023/oeapi:latest
 
-    # Deploy to DigitalOcean 
-    - name: Deploy to DigitalOcean
-      run: |
-        # Generate an SSH key file from GitHub secrets
-        echo "${{ secrets.DROPLET_SSH_KEY }}" > droplet_ssh_key
-        chmod 600 droplet_ssh_key
+      # Login to Docker Hub
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-        # SSH into the droplet and pull the latest Docker image, then restart the container
-        ssh -o StrictHostKeyChecking=no -i droplet_ssh_key ${{ secrets.DROPLET_SSH_USERNAME }}@165.22.87.111 << 'ENDSSH'
-          docker pull startup2023/oeapi:latest
-          cd /root/oeapi
-          docker-compose down || true
-          docker-compose up -d
-          # docker stop oeapi_container || true
-          # docker rm oeapi_container || true
-          # docker run --name oeapi_container -d -p 80:3000 startup2023/oeapi:latest
-        ENDSSH
+      # Build Docker Image
+      - name: Build Production Docker Image
+        run: docker build --target production -t startup2023/oeapi:${{ github.sha }} .
 
+      # Push Docker Image
+      - name: Push Docker Image
+        run: docker push startup2023/oeapi:${{ github.sha }}
+
+      # Deploy to DigitalOcean
+      - name: Deploy to DigitalOcean
+        run: |
+          # Generate an SSH key file from GitHub secrets
+          echo "${{ secrets.DROPLET_SSH_KEY }}" > droplet_ssh_key
+          chmod 600 droplet_ssh_key
+
+          # SSH into the droplet and pull the latest Docker image, then restart the container
+          ssh -o StrictHostKeyChecking=no -i droplet_ssh_key ${{ secrets.DROPLET_SSH_USERNAME }}@165.22.87.111 << 'ENDSSH'
+            docker pull startup2023/oeapi:${{ github.sha }}
+            cd /root/oeapi
+            sed -i 's/startup2023\/oeapi:latest/startup2023\/oeapi:${{ github.sha }}/' docker-compose.yml
+            docker-compose down || true
+            docker-compose up -d
+            # remove unused docker images
+            docker image prune -a -f
+            # docker stop oeapi_container || true
+            # docker rm oeapi_container || true
+            # docker run --name oeapi_container -d -p 80:3000 startup2023/oeapi:latest
+          ENDSSH
