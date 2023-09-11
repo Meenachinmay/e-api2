@@ -3,7 +3,7 @@ version: '3.2'
 services:
   eventapi:
     # build: .  # Path to the directory containing the Dockerfile
-    image: "startup2023/oeapi:dev-latest"
+    image: "startup2023/oeapi:latest"
     ports:
       - "${NESTJS_PORT}:${NESTJS_PORT}"
     # depends_on:

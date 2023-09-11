@@ -38,16 +38,16 @@ jobs:
         echo "${{secrets.ENV_FILE }}" >> .env
 
     # Login to Docker Hub
-    # - name: Login to Docker Hub
-    #   run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+    - name: Login to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    # # Build Docker Image
-    # - name: Build Docker Image
-    #   run: docker build -t startup2023/oeapi:${{ github.sha }} .
+    # Build Docker Image
+    - name: Build Docker Image
+      run: docker build -t startup2023/oeapi:${{ github.sha }} .
 
-    # # Push Docker Image
-    # - name: Push Docker Image
-    #   run: docker push startup2023/oeapi:${{ github.sha }}
+    # Push Docker Image
+    - name: Push Docker Image
+      run: docker push startup2023/oeapi:${{ github.sha }}
 
     # Deploy to DigitalOcean 
     - name: Deploy to DigitalOcean
@@ -58,20 +58,13 @@ jobs:
 
         # SSH into the droplet and pull the latest Docker image, then restart the container
         ssh -o StrictHostKeyChecking=no -i droplet_ssh_key ${{ secrets.DROPLET_SSH_USERNAME }}@165.22.87.111 << 'ENDSSH'
-          # docker pull startup2023/oeapi:${{ github.sha }}
-          git clone https://github.com/Meenachinmay/e-api2.git /root/oeapi
-  
-          cd /root/oeapi
+          docker pull startup2023/oeapi:${{ github.sha }}
 
-          echo "${{ secrets.ENV_FILE }}" >> .env
+          sed -i 's/startup2023\/oeapi:latest/startup2023\/oeapi:${{ github.sha }}/' docker-compose.yml
 
-          docker build -t startup2023/oeapi:dev-latest .
+          docker stop oeapi_container || true
+          docker rm oeapi_container || true
+          docker run --name oeapi_container -d -p 80:3000 startup2023/oeapi:${{ github.sha }}
 
-          docker-compose down || true
-          docker-compose up -d
-
-          #docker image prune -a -f
-          #docker stop oeapi_container || true
-          #docker rm oeapi_container || true
-          #docker run --name oeapi_container -d -p 80:3000 startup2023/oeapi:${{ github.sha }}
+          docker image prune -a -f
         ENDSSH
