@@ -19,6 +19,13 @@ jobs:
       matrix:
         node-version: [18.x]
 
+    env: # Adding environment variables
+      NESTJS_PORT: ${{ secrets.NESTJS_PORT }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      # ...add more here
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
@@ -29,6 +36,15 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
       
+    # Creating env file 
+    - name: "Create env file"
+      run: |
+        echo "${{secrets.ENV_FILE }}" >> .env
+
+    # Login to Docker Hub
+    - name: Login to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
     - name: Build Docker Image
       run: docker build -t startup2023/oeapi:dev-latest .
     
