@@ -1,7 +1,8 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { CreateEventDto } from 'src/dtos/create-event.dto';
 import { AppEvent } from 'src/types/event.type';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class EventsService {
@@ -10,26 +11,25 @@ export class EventsService {
   async createEvent(
     createEventDto: CreateEventDto,
   ): Promise<{ message: string; event: AppEvent }> {
-    // Transform ImageDto array to a simple array of strings.
-    const images = createEventDto.images.map((imageDto) => imageDto.url);
-
-    // Serialize arrays to JSON strings
-    const serializedImages = JSON.stringify(images);
-    const serializedTags = JSON.stringify(createEventDto.tags);
-    const serializedActivities = JSON.stringify(createEventDto.activities);
-    const serializedOmiyage = JSON.stringify(createEventDto.omiyage);
-    const serializedSnsLinks = JSON.stringify(createEventDto.snsLinks);
+    // No need for transformation or serialization
+    const images = createEventDto.images.map(
+      (imageDto) => imageDto.url,
+    ) as Prisma.JsonArray;
+    const tags = createEventDto.tags as Prisma.JsonArray;
+    const activities = createEventDto.activities as Prisma.JsonArray;
+    const omiyage = createEventDto.omiyage as Prisma.JsonArray;
+    const snsLinks = createEventDto.snsLinks as Prisma.JsonArray;
 
     try {
       const createdEvent = await this.prisma.event.create({
         data: {
           title: createEventDto.title,
           description: createEventDto.description,
-          images: serializedImages,
-          tags: serializedTags,
-          activities: serializedActivities,
-          omiyage: serializedOmiyage,
-          snsLinks: serializedSnsLinks,
+          images,
+          tags,
+          activities,
+          omiyage,
+          snsLinks,
           city: createEventDto.city,
           prefecture: createEventDto.prefecture,
         },
@@ -39,11 +39,11 @@ export class EventsService {
         id: createdEvent.id,
         title: createdEvent.title,
         description: createdEvent.description,
-        images: JSON.parse(createdEvent.images),
-        tags: JSON.parse(createdEvent.tags),
-        activities: JSON.parse(createdEvent.activities),
-        omiyage: JSON.parse(createdEvent.omiyage),
-        snsLinks: JSON.parse(createdEvent.snsLinks),
+        images: createdEvent.images as Prisma.JsonArray,
+        tags: createdEvent.tags as Prisma.JsonArray,
+        activities: createdEvent.activities as Prisma.JsonArray,
+        omiyage: createdEvent.omiyage as Prisma.JsonArray,
+        snsLinks: createdEvent.snsLinks as Prisma.JsonArray,
         city: createdEvent.city,
         prefecture: createdEvent.prefecture,
         comments: [],
@@ -55,7 +55,8 @@ export class EventsService {
         event: event,
       };
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      throw new HttpException('Error creating event', HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -67,27 +68,71 @@ export class EventsService {
     const events = await this.prisma.event.findMany({
       take: limit,
       skip: offset,
+      include: {
+        comments: true,
+      },
     });
 
-    const transformedEvents = events.map((customEvent) => {
+    const transformedEvents = events.map((createdEvent) => {
       return {
-        id: customEvent.id,
-        title: customEvent.title,
-        description: customEvent.description,
-        images: JSON.parse(customEvent.images),
-        tags: JSON.parse(customEvent.tags),
-        activities: JSON.parse(customEvent.activities),
-        omiyage: JSON.parse(customEvent.omiyage),
-        snsLinks: JSON.parse(customEvent.snsLinks),
-        city: customEvent.city,
-        prefecture: customEvent.prefecture,
-        createdAt: customEvent.createdAt,
-      } as AppEvent;
+        id: createdEvent.id,
+        title: createdEvent.title,
+        description: createdEvent.description,
+        images: createdEvent.images as Prisma.JsonArray,
+        tags: createdEvent.tags as Prisma.JsonArray,
+        activities: createdEvent.activities as Prisma.JsonArray,
+        omiyage: createdEvent.omiyage as Prisma.JsonArray,
+        snsLinks: createdEvent.snsLinks as Prisma.JsonArray,
+        city: createdEvent.city,
+        prefecture: createdEvent.prefecture,
+        comments: createdEvent.comments,
+        createdAt: createdEvent.createdAt,
+      } as unknown as AppEvent;
     });
 
     return {
       message: 'Events fetched successfully',
       events: transformedEvents,
     };
+  }
+
+  // get an event with unique ID
+  async getEventById(
+    id: number,
+  ): Promise<{ message: string; __event: AppEvent }> {
+    const __id = Number(id);
+    try {
+      const customEvent = await this.prisma.event.findUnique({
+        where: {
+          id: __id,
+        },
+        include: {
+          comments: true,
+        },
+      });
+
+      // transforming the event return type
+      const transformedEvent = {
+        id: customEvent.id,
+        title: customEvent.title,
+        description: customEvent.description,
+        images: customEvent.images as Prisma.JsonArray,
+        tags: customEvent.tags as Prisma.JsonArray,
+        activities: customEvent.activities as Prisma.JsonArray,
+        omiyage: customEvent.omiyage as Prisma.JsonArray,
+        snsLinks: customEvent.snsLinks as Prisma.JsonArray,
+        city: customEvent.city,
+        prefecture: customEvent.prefecture,
+        comments: customEvent.comments,
+        createdAt: customEvent.createdAt,
+      } as unknown as AppEvent;
+
+      return {
+        message: 'Event fetched successfully',
+        __event: transformedEvent,
+      };
+    } catch (error) {
+      console.error('Error in findUnique:', error);
+    }
   }
 }
