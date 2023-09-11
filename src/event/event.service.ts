@@ -46,6 +46,7 @@ export class EventsService {
         snsLinks: JSON.parse(createdEvent.snsLinks),
         city: createdEvent.city,
         prefecture: createdEvent.prefecture,
+        comments: [],
         createdAt: createdEvent.createdAt,
       };
 

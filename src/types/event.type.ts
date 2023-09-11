@@ -9,5 +9,6 @@ export type AppEvent = {
   snsLinks: string[];
   city: string;
   prefecture: string;
+  comments: Comment[];
   createdAt?: Date; // optional if you're not using it in your app
 };
