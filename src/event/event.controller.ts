@@ -22,4 +22,11 @@ export class EventsController {
       offset ? parseInt(offset, 10) : undefined,
     );
   }
+
+  @Get('get-event')
+  async getEvent(
+    @Query('id') id: number,
+  ): Promise<{ message: string; __event: AppEvent }> {
+    return this.eventsService.getEventById(id);
+  }
 }

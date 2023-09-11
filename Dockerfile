@@ -20,5 +20,8 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x docker-entrypoint.sh
 
+# Installing curl
+RUN apk --no-cache add curl
+
 # Development runtime command
 ENTRYPOINT ["docker-entrypoint.sh"]
