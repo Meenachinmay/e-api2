@@ -29,4 +29,12 @@ export class AuthController {
       return { msg: 'not authenticated' };
     }
   }
+
+  @Get('health-check')
+  healthCheck(): any {
+    return {
+      status: 'OK',
+      message: 'Service is healthy',
+    };
+  }
 }
