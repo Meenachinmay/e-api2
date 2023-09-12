@@ -39,4 +39,19 @@ describe('EventService', () => {
     expect(createdEvent).toBeDefined();
     expect(createEventDto.title).toBe(createEventDto.title);
   });
+
+  it('should fetch all the events', async () => {
+    const events = await service.getEvents();
+
+    expect(events).toBeDefined();
+    expect(events.events.length).toBeGreaterThan(0);
+  });
+
+  it('should fetch an event by an given id', async () => {
+    const id = 1;
+    const event = await service.getEventById(id);
+
+    expect(event).toBeDefined();
+    expect(event.__event.id).toBe(id);
+  });
 });
