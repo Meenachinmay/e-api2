@@ -28,22 +28,6 @@ model User {
   role     UserRole @default(USER)
 }
 
-// // event model
-// model Event {
-//   id          Int       @id @default(autoincrement())
-//   title       String
-//   description String
-//   images      String
-//   tags        String
-//   activities  String
-//   omiyage     String
-//   snsLinks    String
-//   city        String
-//   prefecture  String
-//   createdAt   DateTime  @default(now())
-//   comments    Comment[] // Adding the relationship here
-// }
-
 // event model
 model Event {
   id          Int       @id @unique @default(autoincrement())

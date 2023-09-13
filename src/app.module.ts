@@ -10,15 +10,25 @@ import { PassportModule } from '@nestjs/passport';
 import { CommentController } from './comment/comment.controller';
 import { CommentService } from './comment/comment.service';
 import { CommentModule } from './comment/comment.module';
+import { ConfigModule } from '@nestjs/config';
+
+import { KafkaService } from './kafka/kafka.service';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     EventModule,
     AuthModule,
     PassportModule.register({ session: true }),
     CommentModule,
   ],
   controllers: [AppController, EventsController, CommentController],
-  providers: [AppService, PrismaService, EventsService, CommentService],
+  providers: [
+    AppService,
+    PrismaService,
+    EventsService,
+    CommentService,
+    KafkaService,
+  ],
 })
 export class AppModule {}
