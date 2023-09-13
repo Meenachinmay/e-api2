@@ -2,8 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EventsService as EventService } from '../../event/event.service';
 import { CommentService as CommentsService } from '../../comment/comment.service';
 import { PrismaService } from '../../prisma.service';
-import { CreateEventDto } from 'src/dtos/create-event.dto';
-import { ImageDto } from 'src/dtos/image.dto';
 
 describe('Integration Test for Event and Comment', () => {
   let eventService: EventService;
@@ -124,4 +122,7 @@ describe('Integration Test for Event and Comment', () => {
       { content: 'This Content', eventId: 1, id: 1, rating: 5 },
     ]);
   });
+
+  it('should delete and event by an given id and delete all the comments as well', async () => {});
+  
 });

@@ -48,11 +48,11 @@ jobs:
     - name: Build Docker Image
       run: docker build -t startup2023/oeapi:dev-latest .
     
-    - name: Push Docker Image
-      run: docker push startup2023/oeapi:dev-latest
+    # - name: Push Docker Image
+    #   run: docker push startup2023/oeapi:dev-latest
 
-    - name: Pull Docker Image
-      run: docker pull startup2023/oeapi:dev-latest
+    # - name: Pull Docker Image
+    #   run: docker pull startup2023/oeapi:dev-latest
     
     - name: Run Docker Image
       run: docker run --name test_container -d startup2023/oeapi:dev-latest
