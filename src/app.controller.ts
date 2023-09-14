@@ -3,10 +3,14 @@ import { AppService } from './app.service';
 import { User } from './types/user.type';
 import { CreateUserDto } from './dtos/user.dto';
 import { ErrorResponse } from './types/error.type';
+import { KafkaService } from './kafka/kafka.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly kafkaService: KafkaService,
+  ) {}
 
   @Get()
   getHello(): string {
@@ -26,5 +30,10 @@ export class AppController {
   @Post('/update-users')
   updateUser(@Body() user: User) {
     return this.appService.updateUser(user);
+  }
+
+  @Get('/kafka')
+  checkKafka() {
+    this.kafkaService.sendMessage('oeapi', { name: 'Chinmay' });
   }
 }
