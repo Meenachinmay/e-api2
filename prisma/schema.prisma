@@ -29,6 +29,13 @@ model User {
   savedEvents SavedEvent[]
 }
 
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt   DateTime
+}
+
 // event model
 model Event {
   id          Int          @id @unique @default(autoincrement())
