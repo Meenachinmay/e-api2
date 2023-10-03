@@ -1,19 +1,9 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Request,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Response } from '@nestjs/common';
 import { AppService } from './app.service';
-import { User } from './types/user.type';
 import { CreateUserDto } from './dtos/user.dto';
 import { ErrorResponse } from './types/error.type';
+import { User } from './types/user.type';
 // import { KafkaService } from './kafka/kafka.service';
-import { Response } from 'express';
-import { LocalAuthGuard } from './central-auth/__guards__/local-auth.guard';
 
 @Controller()
 export class AppController {
@@ -42,14 +32,8 @@ export class AppController {
   }
 
   @Get('/health-check')
-  healthCheck(@Res() res: Response) {
+  healthCheck(@Response() res) {
     res.sendStatus(200);
-  }
-
-  @UseGuards(LocalAuthGuard)
-  @Post('login')
-  login(@Request() request): any {
-    return request.user;
   }
 }
 

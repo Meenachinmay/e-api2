@@ -3,6 +3,7 @@ import { PrismaService } from './prisma.service';
 import { User } from './types/user.type';
 import { CreateUserDto } from './dtos/user.dto';
 import { ErrorResponse } from './types/error.type';
+import { hashPassword } from './central-auth/__utils__/helpers';
 
 @Injectable()
 export class AppService {
@@ -35,11 +36,12 @@ export class AppService {
     }
 
     // if everything is fine then save the user in the database
+    const hashedPassword = await hashPassword(user.password);
     return await this.prisma.user.create({
       data: {
         name: user.name,
         email: user.email,
-        password: user.password,
+        password: hashedPassword,
       },
     });
   }
