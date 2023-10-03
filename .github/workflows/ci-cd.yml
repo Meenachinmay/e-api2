@@ -60,7 +60,7 @@ jobs:
     - name: Health Check
       run: |
         sleep 30  # Wait for 30 seconds to allow the container to start
-        response=$(docker exec test_container curl -s -o /dev/null -w "%{http_code}" http://localhost:$NESTJS_PORT/auth/health-check)
+        response=$(docker exec test_container curl -s -o /dev/null -w "%{http_code}" http://localhost:$NESTJS_PORT/health-check)
         if [ "$response" -eq 200 ]; then
           echo "Health check passed"
         else
