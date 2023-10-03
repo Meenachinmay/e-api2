@@ -1,15 +1,15 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { User } from './types/user.type';
 import { CreateUserDto } from './dtos/user.dto';
 import { ErrorResponse } from './types/error.type';
 // import { KafkaService } from './kafka/kafka.service';
+import { Response, Request } from 'express';
 
 @Controller()
 export class AppController {
   constructor(
-    private readonly appService: AppService,
-    // private readonly kafkaService: KafkaService,
+    private readonly appService: AppService, // private readonly kafkaService: KafkaService,
   ) {}
 
   @Get()
@@ -36,4 +36,9 @@ export class AppController {
   // checkKafka() {
   //   this.kafkaService.sendMessage('oeapi', { name: 'Chinmay' });
   // }
+
+  @Get('/health-check')
+  healthCheck(@Res() res: Response) {
+    res.sendStatus(200);
+  }
 }
