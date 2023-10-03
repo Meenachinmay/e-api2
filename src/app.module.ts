@@ -15,6 +15,7 @@ import { ConfigModule } from '@nestjs/config';
 import { EventorgauthController } from './eventorgauth/eventorgauth.controller';
 import { EventorgauthService } from './eventorgauth/eventorgauth.service';
 import { EventorgauthModule } from './eventorgauth/eventorgauth.module';
+import { CentralAuthModule } from './central-auth/central-auth.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { EventorgauthModule } from './eventorgauth/eventorgauth.module';
     PassportModule.register({ session: true }),
     CommentModule,
     EventorgauthModule,
+    CentralAuthModule,
   ],
   controllers: [
     AppController,
@@ -38,5 +40,6 @@ import { EventorgauthModule } from './eventorgauth/eventorgauth.module';
     // KafkaService,
     EventorgauthService,
   ],
+  exports: [AppService],
 })
 export class AppModule {}
