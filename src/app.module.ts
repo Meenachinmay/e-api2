@@ -13,6 +13,9 @@ import { CommentModule } from './comment/comment.module';
 import { ConfigModule } from '@nestjs/config';
 
 import { KafkaService } from './kafka/kafka.service';
+import { EventorgauthController } from './eventorgauth/eventorgauth.controller';
+import { EventorgauthService } from './eventorgauth/eventorgauth.service';
+import { EventorgauthModule } from './eventorgauth/eventorgauth.module';
 
 @Module({
   imports: [
@@ -21,14 +24,21 @@ import { KafkaService } from './kafka/kafka.service';
     AuthModule,
     PassportModule.register({ session: true }),
     CommentModule,
+    EventorgauthModule,
   ],
-  controllers: [AppController, EventsController, CommentController],
+  controllers: [
+    AppController,
+    EventsController,
+    CommentController,
+    EventorgauthController,
+  ],
   providers: [
     AppService,
     PrismaService,
     EventsService,
     CommentService,
     KafkaService,
+    EventorgauthService,
   ],
 })
 export class AppModule {}
