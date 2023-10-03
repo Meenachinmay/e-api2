@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
+import { AppEvent } from 'src/types/event.type';
 import { CreateEventDto } from '../dtos/create-event.dto';
 import { EventsService } from './event.service';
-import { AppEvent } from 'src/types/event.type';
 
 @Controller('api/events')
 export class EventsController {

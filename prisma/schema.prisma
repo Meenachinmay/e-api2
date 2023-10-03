@@ -21,16 +21,17 @@ enum UserRole {
 
 // user model
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  name     String
-  password String?
-  role     UserRole @default(USER)
+  id          Int          @id @default(autoincrement())
+  email       String       @unique
+  name        String
+  password    String?
+  role        UserRole     @default(USER)
+  savedEvents SavedEvent[]
 }
 
 // event model
 model Event {
-  id          Int       @id @unique @default(autoincrement())
+  id          Int          @id @unique @default(autoincrement())
   title       String
   description String
   images      Json? // changed to Json
@@ -40,8 +41,22 @@ model Event {
   snsLinks    Json? // changed to Json
   city        String
   prefecture  String
-  createdAt   DateTime  @default(now())
+  createdAt   DateTime     @default(now())
   comments    Comment[] // Adding the relationship here
+  savedBy     SavedEvent[]
+}
+
+// Junction table
+model SavedEvent {
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  eventId Int
+  event   Event @relation(fields: [eventId], references: [id])
+
+  @@id([userId, eventId])
+  @@index([userId])
+  @@index([eventId])
 }
 
 // comment model
