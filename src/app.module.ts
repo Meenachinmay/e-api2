@@ -5,14 +5,13 @@ import { PrismaService } from './prisma.service';
 import { EventModule } from './event/event.module';
 import { EventsController } from './event/event.controller';
 import { EventsService } from './event/event.service';
-import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 import { CommentController } from './comment/comment.controller';
 import { CommentService } from './comment/comment.service';
 import { CommentModule } from './comment/comment.module';
 import { ConfigModule } from '@nestjs/config';
 
-import { KafkaService } from './kafka/kafka.service';
+// import { KafkaService } from './kafka/kafka.service';
 import { EventorgauthController } from './eventorgauth/eventorgauth.controller';
 import { EventorgauthService } from './eventorgauth/eventorgauth.service';
 import { EventorgauthModule } from './eventorgauth/eventorgauth.module';
@@ -21,7 +20,6 @@ import { EventorgauthModule } from './eventorgauth/eventorgauth.module';
   imports: [
     ConfigModule.forRoot(),
     EventModule,
-    AuthModule,
     PassportModule.register({ session: true }),
     CommentModule,
     EventorgauthModule,
@@ -37,7 +35,7 @@ import { EventorgauthModule } from './eventorgauth/eventorgauth.module';
     PrismaService,
     EventsService,
     CommentService,
-    KafkaService,
+    // KafkaService,
     EventorgauthService,
   ],
 })
