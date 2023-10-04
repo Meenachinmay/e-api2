@@ -6,8 +6,8 @@ services:
     image: "startup2023/oeapi:latest"
     ports:
       - "${NESTJS_PORT}:${NESTJS_PORT}"
-    # depends_on:
-    #   - database
+    depends_on:
+      - redis
     volumes:
       - ./:/usr/src/app  # Replace with the path where your NestJS app should store persistent data
     environment:
@@ -15,6 +15,18 @@ services:
     networks:
       - myoeapi_network 
     restart: always
+  
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes: 
+      - redis_database:/data 
+
+volumes:
+  redis_database:
 
 networks:
   myoeapi_network:

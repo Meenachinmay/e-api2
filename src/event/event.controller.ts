@@ -1,17 +1,19 @@
-import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
-import { CreateEventDto } from 'src/dtos/create-event.dto';
-import { EventsService } from './event.service';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { AppEvent } from 'src/types/event.type';
+import { CreateEventDto } from '../dtos/create-event.dto';
+import { EventsService } from './event.service';
+import { AuthenticatedGuard } from 'src/central-auth/__guards__/Guards';
 
 @Controller('api/events')
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
   @Post('create-event')
-  async createEvent(@Body() createEventDto: CreateEventDto, @Req() req) {
+  async createEvent(@Body() createEventDto: CreateEventDto) {
     return this.eventsService.createEvent(createEventDto);
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Get('get-events')
   async getEvents(
     @Query('limit') limit?: string,

@@ -8,6 +8,7 @@ import { Prisma } from '@prisma/client';
 export class EventsService {
   constructor(private readonly prisma: PrismaService) {}
 
+  // CREATE A NEW EVENT HERE---
   async createEvent(
     createEventDto: CreateEventDto,
   ): Promise<{ message: string; event: AppEvent }> {
@@ -60,40 +61,45 @@ export class EventsService {
     }
   }
 
-  // fetch all the events
+  // FETCH EVENTS HERE
   async getEvents(
     limit?: number,
     offset?: number,
   ): Promise<{ message: string; events: AppEvent[] }> {
-    const events = await this.prisma.event.findMany({
-      take: limit,
-      skip: offset,
-      include: {
-        comments: true,
-      },
-    });
+    try {
+      const events = await this.prisma.event.findMany({
+        take: limit,
+        skip: offset,
+        include: {
+          comments: true,
+        },
+      });
 
-    const transformedEvents = events.map((createdEvent) => {
+      const transformedEvents = events.map((createdEvent) => {
+        return {
+          id: createdEvent.id,
+          title: createdEvent.title,
+          description: createdEvent.description,
+          images: createdEvent.images as Prisma.JsonArray,
+          tags: createdEvent.tags as Prisma.JsonArray,
+          activities: createdEvent.activities as Prisma.JsonArray,
+          omiyage: createdEvent.omiyage as Prisma.JsonArray,
+          snsLinks: createdEvent.snsLinks as Prisma.JsonArray,
+          city: createdEvent.city,
+          prefecture: createdEvent.prefecture,
+          comments: createdEvent.comments,
+          createdAt: createdEvent.createdAt,
+        } as unknown as AppEvent;
+      });
+
       return {
-        id: createdEvent.id,
-        title: createdEvent.title,
-        description: createdEvent.description,
-        images: createdEvent.images as Prisma.JsonArray,
-        tags: createdEvent.tags as Prisma.JsonArray,
-        activities: createdEvent.activities as Prisma.JsonArray,
-        omiyage: createdEvent.omiyage as Prisma.JsonArray,
-        snsLinks: createdEvent.snsLinks as Prisma.JsonArray,
-        city: createdEvent.city,
-        prefecture: createdEvent.prefecture,
-        comments: createdEvent.comments,
-        createdAt: createdEvent.createdAt,
-      } as unknown as AppEvent;
-    });
-
-    return {
-      message: 'Events fetched successfully',
-      events: transformedEvents,
-    };
+        message: 'Events fetched successfully',
+        events: transformedEvents,
+      };
+    } catch (error) {
+      console.error(error);
+      throw new HttpException('Error creating event', HttpStatus.BAD_REQUEST);
+    }
   }
 
   // get an event with unique ID

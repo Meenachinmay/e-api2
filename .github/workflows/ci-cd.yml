@@ -48,11 +48,11 @@ jobs:
     - name: Build Docker Image
       run: docker build -t startup2023/oeapi:dev-latest .
     
-    - name: Push Docker Image
-      run: docker push startup2023/oeapi:dev-latest
+    # - name: Push Docker Image
+    #   run: docker push startup2023/oeapi:dev-latest
 
-    - name: Pull Docker Image
-      run: docker pull startup2023/oeapi:dev-latest
+    # - name: Pull Docker Image
+    #   run: docker pull startup2023/oeapi:dev-latest
     
     - name: Run Docker Image
       run: docker run --name test_container -d startup2023/oeapi:dev-latest
@@ -60,7 +60,7 @@ jobs:
     - name: Health Check
       run: |
         sleep 30  # Wait for 30 seconds to allow the container to start
-        response=$(docker exec test_container curl -s -o /dev/null -w "%{http_code}" http://localhost:$NESTJS_PORT/auth/health-check)
+        response=$(docker exec test_container curl -s -o /dev/null -w "%{http_code}" http://localhost:$NESTJS_PORT/health-check)
         if [ "$response" -eq 200 ]; then
           echo "Health check passed"
         else
