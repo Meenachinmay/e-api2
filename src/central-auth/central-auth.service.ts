@@ -9,7 +9,7 @@ export type ValidateUserReturnResponse = Omit<User, 'password'>;
 export class CentralAuthService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async validateUser(email: string, password: string): Promise<boolean> {
+  async validateUser(email: string, password: string): Promise<User | null> {
     const user = await this.prismaService.user.findUnique({
       where: {
         email: email,
@@ -23,6 +23,7 @@ export class CentralAuthService {
       );
     }
 
-    return compareHash(password, user.password);
+    const isPasswordValid = compareHash(password, user.password);
+    return isPasswordValid ? user : null;
   }
 }

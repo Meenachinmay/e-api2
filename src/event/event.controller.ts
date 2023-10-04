@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { AppEvent } from 'src/types/event.type';
 import { CreateEventDto } from '../dtos/create-event.dto';
 import { EventsService } from './event.service';
+import { AuthenticatedGuard } from 'src/central-auth/__guards__/Guards';
 
 @Controller('api/events')
 export class EventsController {
@@ -12,6 +13,7 @@ export class EventsController {
     return this.eventsService.createEvent(createEventDto);
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Get('get-events')
   async getEvents(
     @Query('limit') limit?: string,
