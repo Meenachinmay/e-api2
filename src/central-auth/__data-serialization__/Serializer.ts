@@ -14,6 +14,9 @@ export class SessionSerializer extends PassportSerializer {
   }
 
   async deserializeUser(user: User, done: Function) {
+    if (!user || !user.email) {
+      return done(null, false);
+    }
     const userDb = await this.prismaService.user.findUnique({
       where: {
         email: user.email,

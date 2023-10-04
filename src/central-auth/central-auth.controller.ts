@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpStatus,
   Post,
   Req,
   Res,
@@ -17,7 +18,11 @@ export class CentralAuthController {
 
   @Post('login')
   @UseGuards(LocalAuthGuard)
-  login(@Body() loginUser: LoginUserDto) {}
+  login(@Req() req, @Res() res): Promise<string> {
+    if (req.isAuthenticated()) {
+      return res.status(200).send('loggedin', HttpStatus.OK);
+    }
+  }
 
   @Post('logout')
   logout(@Req() req, @Res() res): Promise<string> {
