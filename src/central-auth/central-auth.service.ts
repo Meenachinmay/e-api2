@@ -23,7 +23,15 @@ export class CentralAuthService {
       );
     }
 
-    const isPasswordValid = compareHash(password, user.password);
-    return isPasswordValid ? user : null;
+    const isPasswordValid = await compareHash(password, user.password);
+
+    if (isPasswordValid) {
+      return user;
+    } else {
+      throw new HttpException(
+        'Invalid Crendentials (password is not valid)',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
   }
 }

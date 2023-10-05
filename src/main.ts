@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 
 import * as session from 'express-session';
 import * as passport from 'passport';
@@ -10,8 +11,10 @@ import { PrismaClient } from '@prisma/client';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
   app.enableCors({ origin: ['http://localhost:5173'], credentials: true });
   app.useGlobalPipes(new ValidationPipe());
+
   app.use(
     session({
       secret: 'my secret',
@@ -27,6 +30,7 @@ async function bootstrap() {
       }),
     }),
   );
+
   app.use(passport.initialize());
   app.use(passport.session());
 
