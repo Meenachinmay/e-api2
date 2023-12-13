@@ -4,6 +4,7 @@ export type AppEvent = {
   id: number;
   title: string;
   description: string;
+  date: string;
   images: Prisma.JsonArray; // Changed from string[]
   tags: Prisma.JsonArray; // Update this if needed
   activities: Prisma.JsonArray; // Update this if needed

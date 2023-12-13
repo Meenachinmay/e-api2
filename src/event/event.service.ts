@@ -21,11 +21,14 @@ export class EventsService {
     const omiyage = createEventDto.omiyage as Prisma.JsonArray;
     const snsLinks = createEventDto.snsLinks as Prisma.JsonArray;
 
+    console.log('date from request', createEventDto.date);
+
     try {
       const createdEvent = await this.prisma.event.create({
         data: {
           title: createEventDto.title,
           description: createEventDto.description,
+          date: createEventDto.date.toString(),
           images,
           tags,
           activities,
@@ -40,6 +43,7 @@ export class EventsService {
         id: createdEvent.id,
         title: createdEvent.title,
         description: createdEvent.description,
+        date: createdEvent.date,
         images: createdEvent.images as Prisma.JsonArray,
         tags: createdEvent.tags as Prisma.JsonArray,
         activities: createdEvent.activities as Prisma.JsonArray,
@@ -80,6 +84,7 @@ export class EventsService {
           id: createdEvent.id,
           title: createdEvent.title,
           description: createdEvent.description,
+          date: createdEvent.date,
           images: createdEvent.images as Prisma.JsonArray,
           tags: createdEvent.tags as Prisma.JsonArray,
           activities: createdEvent.activities as Prisma.JsonArray,
@@ -122,6 +127,7 @@ export class EventsService {
         id: customEvent.id,
         title: customEvent.title,
         description: customEvent.description,
+        date: customEvent.date,
         images: customEvent.images as Prisma.JsonArray,
         tags: customEvent.tags as Prisma.JsonArray,
         activities: customEvent.activities as Prisma.JsonArray,
