@@ -9,7 +9,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CentralAuthService } from './central-auth.service';
-import { LoginUserDto } from 'src/dtos/login.dto';
 import { AuthenticatedGuard, LocalAuthGuard } from './__guards__/Guards';
 
 @Controller('central-auth')
