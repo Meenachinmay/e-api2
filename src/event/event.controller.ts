@@ -3,6 +3,7 @@ import { AppEvent } from 'src/types/event.type';
 import { CreateEventDto } from '../dtos/create-event.dto';
 import { EventsService } from './event.service';
 import { AuthenticatedGuard } from 'src/central-auth/__guards__/Guards';
+import { CreateEventFromScrappingDataDto } from 'src/dtos/scrapping-event-.dto';
 
 @Controller('api/events')
 export class EventsController {
@@ -11,6 +12,15 @@ export class EventsController {
   @Post('create-event')
   async createEvent(@Body() createEventDto: CreateEventDto) {
     return this.eventsService.createEvent(createEventDto);
+  }
+
+  @Post('create-event-scrapping')
+  async createEventFromScrappingData(
+    @Body() createEventFromScrappingData: CreateEventFromScrappingDataDto,
+  ) {
+    return this.eventsService.createEventFromScrappingData(
+      createEventFromScrappingData,
+    );
   }
 
   @UseGuards(AuthenticatedGuard)

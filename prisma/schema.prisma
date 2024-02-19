@@ -41,6 +41,7 @@ model Event {
   id          Int          @id @unique @default(autoincrement())
   title       String
   description String
+  date        String
   images      Json? // changed to Json
   tags        Json? // changed to Json
   activities  Json? // changed to Json
@@ -61,6 +62,8 @@ model SavedEvent {
   eventId Int
   event   Event @relation(fields: [eventId], references: [id])
 
+  createdAt DateTime @default(now())
+
   @@id([userId, eventId])
   @@index([userId])
   @@index([eventId])
@@ -72,6 +75,7 @@ model Comment {
   content String
   rating  Float
   eventId Int
+  createdAt   DateTime     @default(now())
   event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   @@index([eventId])

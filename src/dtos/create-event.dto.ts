@@ -4,6 +4,7 @@ import {
   ArrayNotEmpty,
   IsNotEmpty,
   ValidateNested,
+  IsDateString,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ImageDto } from './image.dto';
@@ -16,6 +17,10 @@ export class CreateEventDto {
   @IsString()
   @IsNotEmpty()
   description: string;
+
+  @IsDateString()
+  @IsNotEmpty()
+  date: Date;
 
   @IsArray()
   @ArrayNotEmpty()

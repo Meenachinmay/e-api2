@@ -1,13 +1,13 @@
-import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger, ValidationPipe } from '@nestjs/common';
 
 import * as session from 'express-session';
 import * as passport from 'passport';
 
-import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import { PrismaClient } from '@prisma/client';
+import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -35,7 +35,10 @@ async function bootstrap() {
   app.use(passport.session());
 
   try {
-    await app.listen(3000);
+    await app.listen(
+      configService.get<string>('NESTJS_PORT') || 3000,
+      '0.0.0.0',
+    );
   } catch (error) {
     console.error(error);
   }

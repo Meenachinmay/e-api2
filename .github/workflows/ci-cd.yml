@@ -17,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
 
     env: # Adding environment variables
       NESTJS_PORT: ${{ secrets.NESTJS_PORT }}
@@ -57,16 +57,33 @@ jobs:
     - name: Run Docker Image
       run: docker run --name test_container -d startup2023/oeapi:dev-latest
 
+    - name: Check Docker Container Logs
+      run: docker logs test_container
+
     - name: Health Check
       run: |
-        sleep 30  # Wait for 30 seconds to allow the container to start
-        response=$(docker exec test_container curl -s -o /dev/null -w "%{http_code}" http://localhost:$NESTJS_PORT/health-check)
-        if [ "$response" -eq 200 ]; then
-          echo "Health check passed"
-        else
-          echo "Health check failed with status code $response"
+        max_attempts=5
+        attempt_num=1
+        success=false
+
+        while [ $attempt_num -le $max_attempts ]; do
+          response=$(docker exec test_container curl -s -o /dev/null -w "%{http_code}" http://localhost:$NESTJS_PORT/health-check)
+          if [ "$response" -eq 200 ]; then
+            echo "Health check passed"
+            success=true
+            break
+          else
+            echo "Attempt $attempt_num/$max_attempts failed with status code $response"
+            sleep 10
+          fi
+          ((attempt_num=attempt_num+1))
+        done
+
+        if [ "$success" = false ]; then
+          echo "Health check failed after $max_attempts attempts"
           exit 1
-        fi 
+        fi
+
 
   deploy:
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
@@ -74,7 +91,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     env: # Adding environment variables

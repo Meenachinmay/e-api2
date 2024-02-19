@@ -9,10 +9,12 @@ export class SessionSerializer extends PassportSerializer {
     super();
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   serializeUser(user: any, done: Function) {
     done(null, user);
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   async deserializeUser(user: User, done: Function) {
     if (!user || !user.email) {
       return done(null, false);
