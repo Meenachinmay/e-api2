@@ -35,7 +35,10 @@ async function bootstrap() {
   app.use(passport.session());
 
   try {
-    await app.listen(3000);
+    await app.listen(
+      configService.get<string>('NESTJS_PORT') || 3000,
+      '0.0.0.0',
+    );
   } catch (error) {
     console.error(error);
   }
