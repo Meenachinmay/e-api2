@@ -1,8 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { CreateEventDto } from 'src/dtos/create-event.dto';
-import { AppEvent } from 'src/types/event.type';
+import { AppEvent, EventFromScrappingData } from 'src/types/event.type';
 import { Prisma } from '@prisma/client';
+import { CreateEventFromScrappingDataDto } from 'src/dtos/scrapping-event-.dto';
 
 @Injectable()
 export class EventsService {
@@ -146,5 +147,16 @@ export class EventsService {
     } catch (error) {
       console.error('Error in findUnique:', error);
     }
+  }
+
+  // create events in the database from the scrapping data
+  async createEventFromScrappingData(
+    createEventFromScrappingDataDto: CreateEventFromScrappingDataDto,
+  ): Promise<{ message: string; events: EventFromScrappingData[] }> {
+    console.log(createEventFromScrappingDataDto.event_id);
+    return {
+      events: [],
+      message: 'Successfully creatd',
+    };
   }
 }

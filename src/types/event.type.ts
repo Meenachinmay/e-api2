@@ -15,3 +15,12 @@ export type AppEvent = {
   comments?: Comment[];
   createdAt?: Date; // optional if you're not using it in your app
 };
+
+export type EventFromScrappingData = {
+  event_id: string;
+  title: string;
+  image_url: string;
+  location: string;
+  details: string;
+  link: string;
+};
